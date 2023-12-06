@@ -13,6 +13,9 @@ const config: Config = {
       },
     },
     extend: {
+      spacing: {
+        '24': '6rem', // If '24' is not part of the default scale
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

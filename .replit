@@ -29,6 +29,6 @@ requiredFiles = [".replit", "replit.nix", ".config"]
     start = "typescript-language-server --stdio"
 
 [deployment]
-run = ["tsx", "index.ts"]
+run = ["sh", "-c", "./run.sh"]
 deploymentTarget = "cloudrun"
 ignorePorts = false
