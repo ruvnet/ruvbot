@@ -1,0 +1,1 @@
+const e=process.versions.node.split(".").map(Number),s=o=>e[0]-o[0]||e[1]-o[1]||e[2]-o[2],t=s([13,2,0])>=0||s([12,20,0])>=0&&s([13,0,0])<0,p=s([16,0,0])>=0||s([14,18,0])>=0,r=s([16,12,0])<0,n=s([20,0,0])>=0,a=s([20,6,0])>=0;export{p as a,t as b,n as i,r as n,a as s};

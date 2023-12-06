@@ -1,0 +1,1 @@
+(cd llama2_app && npm run generate && npm run dev)

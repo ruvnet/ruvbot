@@ -1,0 +1,3 @@
+"use strict";var s=require("repl"),l=require("./package-70ca1027.cjs"),u=require("./index-5f60304b.cjs");require("url"),require("esbuild"),require("crypto"),require("fs"),require("path"),require("os");function c(e){return e&&typeof e=="object"&&"default"in e?e:{default:e}}var f=c(s);console.log(`Welcome to tsx v${l.version} (Node.js ${process.version}).
+Type ".help" for more information.`);const o=f.default.start(),{eval:p}=o,d=async function(e,t,r,a){const n=await u.transform(e,r,{loader:"ts",tsconfigRaw:{compilerOptions:{preserveValueImports:!0}},define:{require:"global.require"}}).catch(i=>(console.log(i.message),{code:`
+`}));return p.call(this,n.code,t,r,a)};o.eval=d;

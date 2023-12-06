@@ -1,0 +1,30 @@
+version: v1.0
+name: database-node
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Test
+    task:
+      jobs:
+        - name: Test (JWT)
+          commands:
+            - checkout
+            - sem-version node 12
+            - cache restore
+            - npm install
+            - cache store
+            - npm run build --if-present
+            - npm test
+        - name: Test (Repl Identity)
+          commands:
+            - checkout
+            - sem-version node 12
+            - cache restore
+            - npm install
+            - cache store
+            - npm run build --if-present
+            - USE_FILE=1 npm test
+      secrets:
+        - name: replit-database
