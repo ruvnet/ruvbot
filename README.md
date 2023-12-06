@@ -1,4 +1,4 @@
-# ruvBot v0.01
+# ruvBot v0.01c
 
 Created by [@rUv](https://github.com/ruvnet)
 
@@ -30,12 +30,11 @@ Created by [@rUv](https://github.com/ruvnet)
 ### Installation
 
 Clone the repository and install dependencies:
-
-\```bash
+```bash
 git clone https://github.com/ruvnet/ruvbot
 cd ruvBot
 npm install
-\```
+```
 
 ### Configuration
 
@@ -46,9 +45,9 @@ npm install
 
 Start the development server:
 
-\```bash
+```bash
 npm run dev
-\```
+```
 
 Access the bot at [http://localhost:3000](http://localhost:3000).
 
