@@ -43,10 +43,9 @@ npm install
 
 ### Running the Bot
 
-Start the development server:
-
+Start the ruvbot
 ```bash
-npm run dev
+./run.sh
 ```
 
 Access the bot at [http://localhost:3000](http://localhost:3000).
@@ -64,4 +63,4 @@ LlamaIndex is an innovative framework designed to streamline the integration of 
 
 ## Contributions
 
-We welcome your feedback and contributions. Enhance ruvBot by submitting issues and pull requests on our [GitHub repository](https://github.com/ruvnet/ruvBot).
+We welcome your feedback and contributions. Enhance ruvBot by submitting issues and pull requests on our [GitHub repository](https://github.com/ruvnet/ruvbot).
