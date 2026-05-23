@@ -6,7 +6,12 @@ interface Message {
 }
 
 async function checkRunStatus(threadId, runId, headers) {
+  let pollCount = 0;
+  const MAX_POLLS = 30;
   while (true) {
+    if (pollCount++ >= MAX_POLLS) {
+      throw new Error('Assistant response timeout after 30 seconds');
+    }
     const runStatusResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${runId}`, {
       method: 'GET',
       headers: headers,
@@ -22,6 +27,10 @@ async function checkRunStatus(threadId, runId, headers) {
   }
 }
 export async function POST(request: NextRequest) {
+  if (!process.env.OPENAI_ASSISTANT_ID) {
+    return new Response(JSON.stringify({ error: 'OPENAI_ASSISTANT_ID not configured' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+  }
+
   try {
     const body = await request.json();
     const { messages, sessionId }: { messages: Message[], sessionId: string } = body;
@@ -33,11 +42,16 @@ export async function POST(request: NextRequest) {
       }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage?.content || lastMessage.content.length > 4096) {
+      return new Response(JSON.stringify({ error: 'Message too long or empty' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+    }
+
     // Headers for OpenAI API requests
     const headers = new Headers({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-      'OpenAI-Beta': 'assistants=v1',
+      'OpenAI-Beta': 'assistants=v2',
     });
 
     // Always create a new thread for each new session
@@ -72,7 +86,7 @@ export async function POST(request: NextRequest) {
     const runResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
       method: 'POST',
       headers: headers,
-      body: JSON.stringify({ assistant_id: 'asst_y4bevSoLsCAhGIDJnffSLoqH' }),
+      body: JSON.stringify({ assistant_id: process.env.OPENAI_ASSISTANT_ID || '' }),
     });
 
     if (!runResponse.ok) {
@@ -112,9 +126,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error("[LlamaIndex]", error);
-    return new Response(JSON.stringify({
-      error: (error as Error).message,
-    }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    console.error('API error:', error);
+    return new Response(JSON.stringify({ error: 'An internal error occurred' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }

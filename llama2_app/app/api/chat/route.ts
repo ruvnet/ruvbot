@@ -32,6 +32,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage?.content || lastMessage.content.length > 4096) {
+      return NextResponse.json({ error: 'Message too long or empty' }, { status: 400 });
+    }
+
     const llm = new OpenAI({
       model: "gpt-3.5-turbo",
     });
@@ -47,10 +52,10 @@ export async function POST(request: NextRequest) {
     const stream = LlamaIndexStream(response);
     return new StreamingTextResponse(stream);
   } catch (error) {
-    console.error("[LlamaIndex]", error);
+    console.error('API error:', error);
     return NextResponse.json(
       {
-        error: (error as Error).message,
+        error: 'An internal error occurred',
       },
       {
         status: 500,

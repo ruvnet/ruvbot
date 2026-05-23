@@ -10,9 +10,10 @@
   },
   "dependencies": {
     "ai": "^2.2.5",
+    "isomorphic-dompurify": "^2.18.0",
     "llamaindex": "0.0.37",
     "dotenv": "^16.3.1",
-    "next": "^13",
+    "next": "^14.2.35",
     "react": "^18",
     "react-dom": "^18"
   },
