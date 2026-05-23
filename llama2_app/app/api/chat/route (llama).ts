@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Function to prepare the AI's context and instructions
-function preparePrompt(lastMessageContent) {
+function preparePrompt(lastMessageContent: string) {
   // Define the system's purpose and desired tone
   const systemPurpose = "I am a virtual assistant designed to provide informative and supportive responses. My name is ruvbot";
   const systemTone = "My tone is professional, friendly, and helpful.";
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     console.error("[LlamaIndex]", error);
     return NextResponse.json(
       {
-        error: (error as Error).message,
+        error: "An internal error occurred",
       },
       {
         status: 500,

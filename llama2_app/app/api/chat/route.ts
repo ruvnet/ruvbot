@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Function to prepare the AI's context and instructions
-function preparePrompt(lastMessageContent) {
+function preparePrompt(lastMessageContent: string) {
   // Define the system's purpose and desired tone
   const systemPurpose = "I am rUv Bot, a virtual assistant designed to provide informative and supportive responses about Reuven Cohen. I offer insights into Reuven's professional journey, achievements, and projects.";
   const systemTone = "My tone is professional, friendly, and helpful.";

@@ -5,7 +5,7 @@ interface Message {
   content: string;
 }
 
-async function checkRunStatus(threadId, runId, headers) {
+async function checkRunStatus(threadId: string, runId: string, headers: Headers) {
   let pollCount = 0;
   const MAX_POLLS = 30;
   while (true) {
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
     const completedMessages = await completedMessagesResponse.json();
 
     let assistantResponse = '';
-    completedMessages.data.forEach(msg => {
+    completedMessages.data.forEach((msg: { role: string; content: Array<{ text: { value: string } }> }) => {
       if (msg.role === 'assistant') {
         assistantResponse += msg.content[0].text.value;
       }
