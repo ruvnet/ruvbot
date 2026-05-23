@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useChat } from 'ai/react';
 import { ChatInput, ChatMessages } from './ui/chat';
 import { marked } from 'marked';
+import DOMPurify from 'isomorphic-dompurify';
 
 // Define the default message structure
 interface Message {
@@ -67,7 +68,7 @@ export default function ChatSection() {
     if (messages && messages.length > 0) {
       const processedMessages = messages.map(msg => ({
         ...msg,
-        content: typeof msg.content === 'string' ? marked(msg.content) : msg.content,
+        content: typeof msg.content === 'string' ? DOMPurify.sanitize(marked(msg.content) as string) : msg.content,
       }));
       setChatMessages(processedMessages);
     }
@@ -80,7 +81,7 @@ export default function ChatSection() {
 
   // Function to render Markdown content as HTML
   const renderMarkdownContent = (content: string) => {
-    return isClient ? <div className="markdown-container" dangerouslySetInnerHTML={{ __html: marked(content) }} /> : null;
+    return isClient ? <div className="markdown-container" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(content) as string) }} /> : null;
   };
 
   return (
