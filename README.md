@@ -68,4 +68,6 @@ We welcome your feedback and contributions. Enhance ruvBot by submitting issues 
 
 The new [`@ruvbot/proactive`](packages/proactive/README.md) package adds bounded event triage, approval-bound preparation, replay tests, MetaHarness npm connector validation and a real WASM promotion predicate. Start with `npm --prefix packages/proactive ci --ignore-scripts`, then `npm --prefix packages/proactive test` and `npm --prefix packages/proactive run demo`.
 
-This is a single-process reference runtime in shadow mode, alongside the existing chatbot. Production hosting, durable state and authenticated approvals are separate integration work. See [ADR 001](docs/adr/001-proactive-two-loop-runtime.md) and [ADR 002](docs/adr/002-metaharness-npm-wasm-learning.md).
+This is a single-process reference runtime in shadow mode, alongside the existing chatbot. Optional private local persistence now retains cursors and approval receipts across restarts. Production hosting, a notification outbox and authenticated approvals remain separate integration work. See [ADR 001](docs/adr/001-proactive-two-loop-runtime.md) and [ADR 002](docs/adr/002-metaharness-npm-wasm-learning.md).
+
+[ADR 003](docs/adr/003-restart-safety-and-replay.md) adds restart safety, quiet hours, approval edits and labelled replay evaluation.
