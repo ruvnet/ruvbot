@@ -1,0 +1,23 @@
+name: Proactive runtime
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: packages/proactive/package-lock.json
+      - run: npm ci --ignore-scripts
+        working-directory: packages/proactive
+      - run: npm run build:wasm && git diff --exit-code -- wasm/gate.wasm
+        working-directory: packages/proactive
+      - run: npm test && npm run demo && npm run doctor && npm pack --dry-run
+        working-directory: packages/proactive

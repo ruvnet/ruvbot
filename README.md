@@ -64,3 +64,8 @@ LlamaIndex is an innovative framework designed to streamline the integration of 
 ## Contributions
 
 We welcome your feedback and contributions. Enhance ruvBot by submitting issues and pull requests on our [GitHub repository](https://github.com/ruvnet/ruvbot).
+## Proactive runtime (opt-in)
+
+The new [`@ruvbot/proactive`](packages/proactive/README.md) package adds bounded event triage, approval-bound preparation, replay tests, MetaHarness npm connector validation and a real WASM promotion predicate. Start with `npm --prefix packages/proactive ci --ignore-scripts`, then `npm --prefix packages/proactive test` and `npm --prefix packages/proactive run demo`.
+
+This is a single-process reference runtime in shadow mode, alongside the existing chatbot. Production hosting, durable state and authenticated approvals are separate integration work. See [ADR 001](docs/adr/001-proactive-two-loop-runtime.md) and [ADR 002](docs/adr/002-metaharness-npm-wasm-learning.md).
