@@ -28,6 +28,30 @@ The host calls `watch` on each bounded poll, `judge` and `speak` for notificatio
 
 `learn` takes measured candidate and parent scores, safety, regressions and a rule. It adds a proposed rule only after the promotion gate passes. Evaluators and human policy review are external.
 
-This increment is a single-process library and CLI, not a deployed scheduler or updated chatbot UI. State is in memory; production requires durable cursors, approval records, retention, authenticated identity and transaction locks. Audit metadata omits message and action bodies. Do not place secrets in source IDs or targets. No exactly-once guarantee exists across crashes or external systems.
+This increment is a single-process library and CLI, not a deployed scheduler or updated chatbot UI. Optional FileStore persists cursors, approvals and receipts on a private local volume; the default remains in memory. Production still requires authenticated identity, a durable notification outbox, retention operations and live connector integration. Audit metadata omits message and action bodies. Do not place secrets in source IDs or targets. No exactly-once guarantee exists across crashes or external systems.
 
 The upstream MetaHarness WASM artifact is absent in the tested npm release. `doctor` reports JS honestly. ruvbot's separate promotion predicate executes actual WASM and has no imports. No performance improvement is claimed over JavaScript.
+
+
+## Restart-safe local host
+
+```js
+import { FileStore } from '@ruvbot/proactive/store';
+const store = new FileStore('/private/ruvbot-state'); // creates 0700 directory
+const durableBot = new ProactiveBot({
+  store,
+  quietHours: { start: 22, end: 7, offsetMinutes: -240 },
+  maxEventAgeMs: 86400000,
+  maxHistory: 10000
+});
+try {
+  durableBot.watch(events, { source: 'monitor', cursor: 'page-42' });
+  // Route accepted events; defer means queue for the next host brief.
+} finally { durableBot.close(); }
+```
+
+Only one FileStore writer may open a directory. Interrupted executing actions recover as `uncertain` and require reconciliation. A crash leaves a lock: confirm the old process is dead and reconcile receipts before manually removing it. Never run this on a shared filesystem. Storage failures disable the runtime. Snapshot action payloads are plaintext and need host volume protection. Event receipt and notification delivery are distinct; there is no durable notification outbox yet.
+
+`edit(id, digest, replacement)` revokes old approval and returns a new pending packet. Expired pending packets stop consuming the active preparation budget. Quiet hours never suppress P0 or imminent deadlines. Update the UTC offset for daylight saving changes.
+
+Run `npm run benchmark` for labelled synthetic replay metrics. For operational evaluation, import `evaluateReplay` from `@ruvbot/proactive/evaluate` and supply independent `{event, expected}` cases. Compare held-out critical recall and alert precision before changing rules. Synthetic fixture accuracy does not prove real-world quality. See ADR 003 for limits and recovery.
