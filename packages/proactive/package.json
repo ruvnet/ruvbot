@@ -1,0 +1,40 @@
+{
+  "name": "@ruvbot/proactive",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Governed proactive attention and preparation loops for ruvbot",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./metaharness": "./src/metaharness.js",
+    "./wasm": "./src/wasm.js",
+    "./store": "./src/store.js",
+    "./evaluate": "./src/evaluate.js"
+  },
+  "bin": {
+    "ruvbot-proactive": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "wasm",
+    "scripts"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "demo": "node src/cli.js demo",
+    "doctor": "node src/cli.js doctor",
+    "build:wasm": "node scripts/build-wasm.js",
+    "prepack": "npm run build:wasm",
+    "benchmark": "node scripts/benchmark.js"
+  },
+  "dependencies": {
+    "@metaharness/kernel": "0.1.3"
+  },
+  "devDependencies": {
+    "wabt": "1.0.39"
+  }
+}
