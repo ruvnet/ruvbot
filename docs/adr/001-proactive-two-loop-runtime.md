@@ -1,6 +1,6 @@
 # ADR 001: Proactive ruvbot runtime
 
-Status: Accepted for opt-in reference implementation, not production activation.
+Status: Accepted for opt-in reference implementation, not production activation. Storage limitations below describe the initial increment; ADR 003 adds optional single-writer persistence.
 
 ## Context and provenance
 
