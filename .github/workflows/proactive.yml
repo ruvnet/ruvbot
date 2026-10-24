@@ -19,5 +19,5 @@ jobs:
         working-directory: packages/proactive
       - run: npm run build:wasm && git diff --exit-code -- wasm/gate.wasm
         working-directory: packages/proactive
-      - run: npm test && npm run demo && npm run doctor && npm pack --dry-run
+      - run: npm test && npm run benchmark && npm run demo && npm run doctor && npm pack --dry-run
         working-directory: packages/proactive
